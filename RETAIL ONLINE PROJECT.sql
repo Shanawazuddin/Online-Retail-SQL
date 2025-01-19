@@ -1,4 +1,4 @@
--- Project Report: Retail Online Sales Analysis
+## Project Report: Retail Online Sales Analysis
 
 -- DATABASE INFORMATION
 
