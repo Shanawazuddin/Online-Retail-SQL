@@ -9,13 +9,21 @@ This project analyzes the retail sales data from the RETAIL_ONLINE table within 
 The data used in this analysis contains all transactions occurring between 01/12/2010 and 09/12/2011 for a UK-based online retailer selling unique all-occasion gifts. The data includes critical details such as:
 
 INVOICE_NO: Unique invoice number for each transaction
+
 CUSTOMER_ID: Customer identification
+
 QUANTITY: Number of items sold in each transaction
+
 UNIT_PRICE: Price per item
+
 INVOICE_DATE: Date of the transaction
+
 COUNTRY: Customer's country
+
 Project Goals
-The primary goals of this project are:
+
+
+## The primary goals of this project are:
 
 ## Data Preprocessing:
 
