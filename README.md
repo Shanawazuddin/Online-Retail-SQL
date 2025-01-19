@@ -20,7 +20,6 @@ INVOICE_DATE: Date of the transaction
 
 COUNTRY: Customer's country
 
-Project Goals
 
 
 ## The primary goals of this project are:
