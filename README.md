@@ -1,104 +1,221 @@
-# Online-Retail-Analysis-SQL
+# Retail Online Sales Analysis 📊
 
-## Project Overview
+Welcome to the **Retail Online Sales Analysis** project! This repository showcases how SQL can transform raw transactional data into actionable business insights for a UK-based online retailer specializing in unique all-occasion gifts. By analyzing sales patterns, customer behavior, and product performance, this project provides valuable takeaways for sales strategy, inventory management, and customer engagement.
 
-This project analyzes the retail sales data from the RETAIL_ONLINE table within the RETAIL database. The main objective of this analysis is to extract valuable business insights that can help drive decision-making in sales strategy, inventory management, and customer engagement. This analysis focuses on a variety of business aspects, including identifying sales patterns, evaluating product and customer performance, and calculating key performance indicators (KPIs) to understand overall business performance.
+---
 
-##Data Source
+## 🌟 Project Overview
 
-The data used in this analysis contains all transactions occurring between 01/12/2010 and 09/12/2011 for a UK-based online retailer selling unique all-occasion gifts. The data includes critical details such as:
+The dataset contains transactional data from **01/12/2010 to 09/12/2011** and includes the following key fields:
 
-INVOICE_NO: Unique invoice number for each transaction
+- **INVOICE_NO**: Unique transaction ID  
+- **CUSTOMER_ID**: Customer identifier  
+- **QUANTITY**: Items sold in each transaction  
+- **UNIT_PRICE**: Price per unit of the item  
+- **INVOICE_DATE**: Date of the transaction  
+- **COUNTRY**: Country of the customer  
 
-CUSTOMER_ID: Customer identification
+This analysis answers critical business questions like:  
+- **Which products drive the most revenue?**  
+- **Who are the most loyal customers?**  
+- **What are the seasonal trends in sales?**  
+- **Which countries contribute the most to sales?**
 
-QUANTITY: Number of items sold in each transaction
+---
 
-UNIT_PRICE: Price per item
+## 🔑 Key Features
 
-INVOICE_DATE: Date of the transaction
+1. **Data Preprocessing**:  
+   - Checked and cleaned data for missing or null values in critical fields.  
+   - Standardized `INVOICE_DATE` format to `YYYY-MM-DD`.  
 
-COUNTRY: Customer's country
+2. **Sales Insights**:  
+   - Total sales per transaction.  
+   - Best-selling products and their revenue contributions.  
+   - Sales trends by month, day of the week, and time of day.  
 
+3. **Customer Analysis**:  
+   - Identified frequent and high-value customers.  
+   - Examined customer loyalty patterns.  
 
+4. **Performance Trends**:  
+   - Sales by region and country.  
+   - Seasonal and time-based trends for strategic planning.  
 
-## The primary goals of this project are:
+5. **Product Optimization**:  
+   - Unsold products for inventory adjustments.  
+   - Revenue and performance of premium products.
 
-## Data Preprocessing:
+---
 
-Cleanse the dataset and address missing values or formatting issues.
+## 🚀 Installation and Setup
 
-Sales Analysis: Identify trends and patterns in sales, including total sales per transaction, revenue by product, and sales by country.
+1. **Clone this repository**:
+   ```bash
+   git clone https://github.com/shanawazuddin/retail-online-sales-analysis.git
+   cd retail-online-sales-analysis
+   ```
 
-Customer Analysis: Examine customer behavior and loyalty, and identify the most frequent customers.
+2. **Set up the database**:
+   - Import the `RETAIL_ONLINE` table schema or a similar dataset.
 
-Trend Analysis: Analyze sales performance over time by day, month, and week.
+3. **Run the SQL queries**:
+   - Use your preferred SQL environment (e.g., MySQL, PostgreSQL) to execute the queries in the `queries.sql` file.
 
-Key Performance Indicators (KPIs): Calculate KPIs like average sales per transaction, most expensive products, and sales conversion rates.
+4. **Explore insights**:
+   - Analyze the output to uncover trends and actionable insights.
 
-## Key Insights
+---
 
-Here are the key insights generated from the analysis:
+## 📂 SQL Analysis and Queries  
 
-Missing Data: We checked and cleaned critical fields like QUANTITY, UNIT_PRICE, and CUSTOMER_ID to ensure the analysis would be accurate.
+### **1. Data Preprocessing and Cleaning**  
+Standardize the date format and check for missing data in critical fields.  
+```sql
+-- Check for missing data
+SELECT * FROM retail_online 
+WHERE QUANTITY IS NULL OR UNIT_PRICE IS NULL OR CUSTOMER_ID IS NULL;
 
-Total Sales per Transaction: Calculated the total sales per transaction to understand customer spending behavior.
+-- Update date format
+UPDATE RETAIL_ONLINE
+SET INVOICE_DATE = STR_TO_DATE(INVOICE_DATE, '%d-%m-%Y')
+WHERE STR_TO_DATE(INVOICE_DATE, '%d-%m-%Y') IS NOT NULL;
+```
 
-Best-Selling Products: Identified products with the highest sales volumes, which are critical for inventory management and marketing efforts.
+### **2. Total Sales per Transaction**  
+Calculate the total value of each transaction.  
+```sql
+SELECT 
+    INVOICE_NO, SUM(QUANTITY * UNIT_PRICE) AS TOTAL_AMOUNT
+FROM
+    retail_online
+GROUP BY INVOICE_NO;
+```
 
-Revenue by Product: Analyzed the revenue generated by each product to optimize the product portfolio.
+### **3. Best-Selling Products**  
+Identify the most popular products based on quantity sold.  
+```sql
+SELECT 
+    STOCK_CODE, SUM(QUANTITY) AS TOTAL_SOLD
+FROM
+    retail_online
+GROUP BY STOCK_CODE
+ORDER BY TOTAL_SOLD DESC;
+```
 
-Most Frequent Customers: Identified loyal customers who make frequent purchases, enabling personalized marketing and retention strategies.
+### **4. Revenue by Product**  
+Analyze which products generate the most revenue.  
+```sql
+SELECT 
+    STOCK_CODE, SUM(QUANTITY * UNIT_PRICE) AS REVENUE
+FROM
+    retail_online
+GROUP BY STOCK_CODE
+ORDER BY REVENUE DESC;
+```
 
-Sales by Country: Examined the geographical performance of the business and identified the most profitable regions.
+### **5. Most Frequent Customers**  
+Identify loyal customers based on transaction frequency.  
+```sql
+SELECT 
+    CUSTOMER_ID, COUNT(INVOICE_NO) AS TOTAL_ORDERS
+FROM
+    retail_online
+GROUP BY CUSTOMER_ID 
+ORDER BY TOTAL_ORDERS DESC;
+```
 
-Sales Trends: Studied the sales trends by day of the week and month to identify peak sales periods, seasonality, and time-based patterns.
+### **6. Sales by Country**  
+Discover the most profitable regions.  
+```sql
+SELECT 
+    COUNTRY, SUM(QUANTITY * UNIT_PRICE) AS TOTAL_SALES
+FROM
+    retail_online
+GROUP BY COUNTRY
+ORDER BY TOTAL_SALES DESC;
+```
 
-Sales Conversion Rate: Calculated the average sales per transaction to measure the effectiveness of sales strategies.
+### **7. Sales Trends Over Time**  
+Analyze sales by month, day of the week, and time of day.  
+```sql
+-- Monthly sales trends
+SELECT 
+    MONTH(INVOICE_DATE) AS MONTH, 
+    SUM(QUANTITY * UNIT_PRICE) AS TOTAL_SALES
+FROM 
+    retail_online
+GROUP BY MONTH
+ORDER BY MONTH;
 
-High-Value Transactions: Highlighted transactions with high total sales to identify revenue-generating patterns.
+-- Sales by day of the week
+SELECT 
+    DAYOFWEEK(INVOICE_DATE) AS DAY, 
+    SUM(QUANTITY * UNIT_PRICE) AS TOTAL_SALES
+FROM 
+    retail_online
+GROUP BY DAY
+ORDER BY TOTAL_SALES DESC;
 
-Unsold Products: Identified products that have never been sold to optimize inventory and marketing efforts.
+-- Sales by hour of the day
+SELECT 
+    HOUR(INVOICE_TIME) AS HOUR, 
+    SUM(QUANTITY * UNIT_PRICE) AS TOTAL_SALES
+FROM 
+    retail_online
+GROUP BY HOUR
+ORDER BY HOUR;
+```
 
-## SQL Queries Used
- 
-The analysis includes a series of SQL queries to extract key insights:
+### **8. High-Value Transactions**  
+Identify invoices exceeding a specific threshold (e.g., 1000).  
+```sql
+SELECT 
+    INVOICE_NO, SUM(QUANTITY * UNIT_PRICE) AS TOTAL_AMOUNT
+FROM
+    retail_online
+GROUP BY INVOICE_NO
+HAVING TOTAL_AMOUNT >= 1000;
+```
 
-Missing Data Check
-Total Sales per Transaction
-Best-Selling Products
-Revenue by Product
-Most Frequent Customers
-Sales by Country
-Sales Trends by Time (Month, Day of Week, Hour)
-High-Value Invoices
-Unsold Products
-Sales Conversion Rate
-Data Cleaning & Preprocessing
-Ensured all dates are in the YYYY-MM-DD format for accurate time-based analysis.
-Addressed missing or null values in key columns such as QUANTITY, UNIT_PRICE, and CUSTOMER_ID.
-Corrected data formatting errors to ensure consistency and facilitate further analysis.
+### **9. Unsold Products**  
+Find products that have never been sold.  
+```sql
+SELECT 
+    STOCK_CODE, DESCRIPTION
+FROM
+    retail_online
+GROUP BY STOCK_CODE, DESCRIPTION
+HAVING SUM(QUANTITY) = 0;
+```
 
+---
 
-## Installation and Setup
+## 📈 Key Insights  
 
-Clone this repository:
+1. **Top Products**: Identified the best-sellers and high-revenue items.  
+2. **Loyal Customers**: Recognized frequent buyers for targeted promotions.  
+3. **Seasonality**: Sales peaked in specific months and days of the week.  
+4. **Unsold Inventory**: Highlighted items to discontinue or re-promote.  
+5. **Regional Insights**: Most sales originated from the UK, followed by other regions.  
 
-git clone https://github.com/shanawazuddin/retail-online-sales-analysis.git
+---
 
-Set up the RETAIL database with the provided RETAIL_ONLINE table (or similar data schema).
+## ✨ Future Scope
 
-Execute the SQL queries from the queries.sql file to perform the analysis.
+- Advanced analytics like clustering customers by purchase behavior.  
+- Predictive analysis for sales forecasting.  
+- Integration with dashboards (e.g., Power BI, Tableau) for visualization.  
 
-View the generated insights and reports.
+---
 
-## Conclusion
+## 🤝 Contributing
 
-This project successfully provided valuable insights into the sales data of an online retailer. The analysis identified key trends and KPIs, including:
+Feel free to fork the repository, raise issues, or contribute enhancements!
 
-### Best-selling and most profitable products
-### Customer purchasing behavior and loyalty patterns
-### Geographical performance and market-specific sales trends
-### Seasonal and time-based trends that impact sales performance
+---
 
-### These insights can help businesses enhance their marketing strategies, optimize inventory management, and improve customer engagement. Further analysis can focus on implementing targeted promotions or refining product pricing based on customer purchasing patterns.
+## 📬 Contact  
+
+If you have any questions or feedback, connect with me on [LinkedIn](https://www.linkedin.com/in/shanawazuddin) or [email](shanawazuddin474@gmail.com)
+
