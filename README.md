@@ -217,5 +217,5 @@ Feel free to fork the repository, raise issues, or contribute enhancements!
 
 ## 📬 Contact  
 
-If you have any questions or feedback, connect with me on [LinkedIn](https://www.linkedin.com/in/shanawazuddin) or [email](shanawazuddin474@gmail.com)
+If you have any questions or feedback, connect with me on [LinkedIn](https://www.linkedin.com/in/shanawaz474/) or [email](mailto:shanawazuddin474@gmail.com)
 
