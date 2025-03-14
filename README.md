@@ -268,4 +268,4 @@ Feel free to fork this repository, submit issues, or contribute improvements to 
 
 ## 📬 Contact
 
-Have questions or feedback? Reach out via [LinkedIn](https://www.linkedin.com/in/shanawaz474/) or [Email](mailto:shanawazuddin474@gmail.com). 
+Have questions or feedback? Reach out via [Email](mailto:shanawazuddin474@gmail.com). 
